@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move &apos;Levels.json&apos; to &apos;files&apos;" description="Move &apos;Levels.json&apos; to &apos;files&apos;" destination="resources/files" element1="resources/Levels.json" flags="7" id="org.eclipse.ltk.core.refactoring.move.resources" resources="1" stamp="1540408376418" updateReferences="true"/>
+</session>

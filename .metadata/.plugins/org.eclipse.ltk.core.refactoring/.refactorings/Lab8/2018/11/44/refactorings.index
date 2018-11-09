@@ -1,0 +1,10 @@
+1541167037161	Convert anonymous class to nested
+1541167138618	Move type 'BagImpl' to new file
+1541168163189	Push down
+1541168296124	Extract interface 'Motorized'
+1541274837010	Extract method 'addProperty'
+1541274914614	Extract local variable 'key'
+1541275006972	Extract local variable 'value'
+1541275057231	Extract constant 'DEFINE'
+1541275133379	Inline local variable 's'
+1541275982267	Encapsulate field 'make'

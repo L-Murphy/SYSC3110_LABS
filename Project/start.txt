@@ -1,0 +1,11 @@
+-Zombie
+
+Entity:
+coordinate:Coordinate
+health: Integer
+name: String
+
+getCoordinate:Coordinate
+getHealth:Integer
+setCoordinate(Coordinate)
+setHealth(Integer)

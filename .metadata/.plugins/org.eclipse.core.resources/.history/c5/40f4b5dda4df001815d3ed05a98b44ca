@@ -1,0 +1,6 @@
+
+public class Automobile extends Vehicle {
+   public String make;
+   public String model;
+
+}

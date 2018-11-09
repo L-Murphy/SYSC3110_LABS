@@ -1,0 +1,241 @@
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.JLabel;
+import javax.swing.JList;
+
+
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+public class labGui {
+
+	private JFrame frame;
+	private JTextField nameText;
+	private JTextField addressText;
+	private JTextField numberText;
+	private AddressBook book;
+	private JMenuItem mntmSave;
+	private JMenuItem mntmDisplay;
+	private JButton btnNewButton;
+
+	
+	private JList<BuddyInfo> buddyList;
+	private DefaultListModel<BuddyInfo> buddyListModel;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					labGui window = new labGui();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public labGui() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		
+		frame = new JFrame();
+		frame.setBounds(100, 100, 360, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		
+		JMenu menu = new JMenu("");
+		menuBar.add(menu);
+		
+		JMenu mnAdressbookMenu = new JMenu("File");
+		menuBar.add(mnAdressbookMenu);
+		
+		JMenu mnAddressbook = new JMenu("AddressBook");
+		mnAdressbookMenu.add(mnAddressbook);
+		
+		mntmSave = new JMenuItem("Save");
+		mntmSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String bookString = "";
+				for(BuddyInfo b : book.getBuddyList()) {
+					bookString += b.toString() + ". ";
+				}
+				BufferedWriter out;
+				try {
+					out = new BufferedWriter(new FileWriter("address.txt"));
+					out.write(bookString);
+					out.close();
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
+		mnAddressbook.add(mntmSave);
+		mntmSave.setEnabled(false);
+		
+		JMenuItem mntmCreate = new JMenuItem("Create AddressBook");
+		mntmCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				btnNewButton.setEnabled(true);
+				mntmSave.setEnabled(true);
+				mntmDisplay.setEnabled(true);
+				
+				buddyListModel = new DefaultListModel<>();
+				buddyListModel.addElement(new BuddyInfo("Liam", "12 Rob Way", "555 555 5555"));
+				buddyList = new JList<>(buddyListModel);
+				buddyList.addListSelectionListener(new ListSelectionListener() {
+		            @Override
+		            public void valueChanged(ListSelectionEvent e) {
+		                if (!e.getValueIsAdjusting()) {
+		                    final List<BuddyInfo> selectedValuesList = buddyList.getSelectedValuesList();
+		                    System.out.println(selectedValuesList);
+		                }
+		            }
+		        });
+				GridBagConstraints gbc_JList = new GridBagConstraints();
+				gbc_JList.fill = GridBagConstraints.BOTH;
+				gbc_JList.gridx = 0;
+				gbc_JList.gridy = 8;
+				frame.getContentPane().add(buddyList, gbc_JList);
+				
+				
+			}
+			
+		});
+		
+
+		
+		mnAddressbook.add(mntmCreate);
+		
+		mntmDisplay = new JMenuItem("Display AddressBook");
+		mntmDisplay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String bookString = "";
+				for(BuddyInfo b : book.getBuddyList()) {
+					bookString += b.toString() + "\n";
+				}
+				
+			}
+		});
+		
+		mnAddressbook.add(mntmDisplay);
+		mntmDisplay.setEnabled(false);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		frame.getContentPane().setLayout(gridBagLayout);
+		
+		JLabel lblNameOfBuddy = new JLabel("Name of Buddy");
+		GridBagConstraints gbc_lblNameOfBuddy = new GridBagConstraints();
+		gbc_lblNameOfBuddy.anchor = GridBagConstraints.WEST;
+		gbc_lblNameOfBuddy.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNameOfBuddy.gridx = 0;
+		gbc_lblNameOfBuddy.gridy = 0;
+		frame.getContentPane().add(lblNameOfBuddy, gbc_lblNameOfBuddy);
+		
+		nameText = new JTextField();
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.insets = new Insets(0, 0, 5, 0);
+		gbc_textField.anchor = GridBagConstraints.WEST;
+		gbc_textField.gridx = 0;
+		gbc_textField.gridy = 1;
+		frame.getContentPane().add(nameText, gbc_textField);
+		nameText.setColumns(20);
+		
+		JLabel lblAddressOfBuddy = new JLabel("Address of Buddy");
+		GridBagConstraints gbc_lblAddressOfBuddy = new GridBagConstraints();
+		gbc_lblAddressOfBuddy.anchor = GridBagConstraints.WEST;
+		gbc_lblAddressOfBuddy.insets = new Insets(0, 0, 5, 0);
+		gbc_lblAddressOfBuddy.gridx = 0;
+		gbc_lblAddressOfBuddy.gridy = 2;
+		frame.getContentPane().add(lblAddressOfBuddy, gbc_lblAddressOfBuddy);
+		
+		addressText = new JTextField();
+		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
+		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_1.anchor = GridBagConstraints.WEST;
+		gbc_textField_1.gridx = 0;
+		gbc_textField_1.gridy = 3;
+		frame.getContentPane().add(addressText, gbc_textField_1);
+		addressText.setColumns(20);
+		
+		JLabel lblNumberOfBuddy = new JLabel("Number of Buddy");
+		GridBagConstraints gbc_lblNumberOfBuddy = new GridBagConstraints();
+		gbc_lblNumberOfBuddy.anchor = GridBagConstraints.WEST;
+		gbc_lblNumberOfBuddy.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNumberOfBuddy.gridx = 0;
+		gbc_lblNumberOfBuddy.gridy = 4;
+		frame.getContentPane().add(lblNumberOfBuddy, gbc_lblNumberOfBuddy);
+		
+		numberText = new JTextField();
+		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
+		gbc_textField_2.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_2.anchor = GridBagConstraints.WEST;
+		gbc_textField_2.gridx = 0;
+		gbc_textField_2.gridy = 5;
+		frame.getContentPane().add(numberText, gbc_textField_2);
+		numberText.setColumns(20);
+		
+		btnNewButton = new JButton("Add to Book");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				buddyListModel.addElement(new BuddyInfo(nameText.getText(), addressText.getText(), numberText.getText()));
+				
+				
+				nameText.setText("");
+				addressText.setText("");
+				numberText.setText("");
+				
+			}
+		});
+		
+		btnNewButton.setEnabled(false);
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewButton.anchor = GridBagConstraints.WEST;
+		gbc_btnNewButton.gridx = 0;
+		gbc_btnNewButton.gridy = 6;
+		frame.getContentPane().add(btnNewButton, gbc_btnNewButton);
+		
+	}
+
+}
